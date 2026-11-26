@@ -1,0 +1,182 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace oop_c_7._1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Point p1; p1.X = 5; p1.Y = 23;
+            Point p2; p2.X = 12; p2.Y = 1;
+
+            Console.WriteLine("Точка 1: (" + p1.X + "; " + p1.Y + ")");
+            Console.WriteLine("Точка 2: (" + p2.X + "; " + p2.Y + ")");
+            Console.WriteLine("Расстояние: " + p1.Distance(p2));
+
+            Rectangle rect;
+            rect.Width = 5;
+            rect.Height = 3;
+
+            Console.WriteLine("Площадь: " + rect.Area());
+            Console.WriteLine("Периметр: " + rect.Perimeter());
+
+            Book book;
+            book.Title = "Мастер и Маргарита";
+            book.Author = "М. Булгаков";
+            book.Year = 1967;
+
+            Console.WriteLine(book.Title + " — " + book.Author + " (" + book.Year + ")");
+
+            ComplexNumber a;
+            a.Real = 2;
+            a.Imag = 3;
+
+            ComplexNumber b;
+            b.Real = 1;
+            b.Imag = -4;
+
+            ComplexNumber sum = a.Add(b);
+            ComplexNumber diff = a.Subtract(b);
+            ComplexNumber prod = a.Multiply(b);
+
+            Console.WriteLine("Сумма: " + sum.ToText());
+            Console.WriteLine("Разность: " + diff.ToText());
+            Console.WriteLine("Произведение: " + prod.ToText());
+
+            Color color;
+            color.R = 255;
+            color.G = 128;
+            color.B = 0;
+
+            Console.WriteLine("Цвет: " + color.ToHex());
+
+            SimpleDate date;
+            date.Day = 15;
+            date.Month = 10;
+            date.Year = 2026;
+
+            if (date.IsLeapYear())
+            {
+                Console.WriteLine(date.Year + " год високосный");
+            }
+            else
+            {
+                Console.WriteLine(date.Year + " год не високосный");
+            }
+        }
+    }
+
+    struct Point
+    {
+        public int X; public int Y;
+
+        public double Distance(Point other)
+        {
+            int dx = X - other.X;
+            int dy = Y - other.Y;
+            double result = Math.Sqrt(dx * dx + dy * dy);
+            return result;
+        }
+    }
+
+    public struct Rectangle
+    {
+        public int Width; public int Height;
+
+        public int Area()
+        {
+            return Width * Height;
+        }
+
+        public int Perimeter()
+        {
+            return 2 * (Width + Height);
+        }
+    }
+
+    public struct Book
+    {
+        public string Title; public string Author; public int Year;
+    }
+
+    struct ComplexNumber
+    {
+        public int Real;
+        public int Imag;
+
+        public ComplexNumber Add(ComplexNumber other)
+        {
+            ComplexNumber result;
+            result.Real = Real + other.Real;
+            result.Imag = Imag + other.Imag;
+            return result;
+        }
+
+        public ComplexNumber Subtract(ComplexNumber other)
+        {
+            ComplexNumber result;
+            result.Real = Real - other.Real;
+            result.Imag = Imag - other.Imag;
+            return result;
+        }
+
+        public ComplexNumber Multiply(ComplexNumber other)
+        {
+            ComplexNumber result;
+            result.Real = Real * other.Real - Imag * other.Imag;
+            result.Imag = Real * other.Imag + Imag * other.Real;
+            return result;
+        }
+        public string ToText()
+        {
+            if (Imag >= 0)
+            {
+                return Real + " + " + Imag + "i";
+            }
+            else
+            {
+                return Real + " - " + (-Imag) + "i";
+            }
+        }
+    }
+
+    public struct Color
+    {
+        public byte R;
+        public byte G;
+        public byte B;
+
+        public string ToHex()
+        {
+            return "#" + R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
+        }
+    }
+
+    public struct SimpleDate
+    {
+        public int Day;
+        public int Month;
+        public int Year;
+
+        public bool IsLeapYear()
+        {
+            if (Year % 400 == 0)
+            {
+                return true;
+            }
+            if (Year % 100 == 0)
+            {
+                return false;
+            }
+            if (Year % 4 == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+}
