@@ -1,0 +1,87 @@
+using System;
+
+namespace DeliveryService
+{
+    abstract class Delivery
+    {
+        protected string name;
+        protected decimal price;
+
+        public Delivery(string name)
+        {
+            Name = name;
+        }
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentException("Название доставки не может быть пустым");
+                if (value.Length > 20)
+                    throw new ArgumentException("Название доставки не должно превышать 20 символов");
+
+                name = value;
+            }
+        }
+        public decimal Price
+        {
+            get { return price; }
+        }
+        public abstract void CalculatePrice(decimal basePrice);
+
+        public override string ToString()
+        {
+            return $"{Name} - стоимость: {Price} руб.";
+        }
+    }
+    class StandardDelivery : Delivery
+    {
+        public StandardDelivery(string name) : base(name) { }
+
+        public override void CalculatePrice(decimal basePrice)
+        {
+            price = basePrice * 1.0m;
+        }
+    }
+    class ExpressDelivery : Delivery
+    {
+        public ExpressDelivery(string name) : base(name) { }
+
+        public override void CalculatePrice(decimal basePrice)
+        {
+            price = basePrice * 2.5m;
+        }
+    }
+    class InternationalDelivery : Delivery
+    {
+        public InternationalDelivery(string name) : base(name) { }
+
+        public override void CalculatePrice(decimal basePrice)
+        {
+            price = basePrice * 4.0m;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            decimal basePrice = 20m;
+
+            Delivery standard = new StandardDelivery("Стандартная");
+            Delivery express = new ExpressDelivery("Экспресс");
+            Delivery international = new InternationalDelivery("Международная");
+
+            standard.CalculatePrice(basePrice);
+            express.CalculatePrice(basePrice);
+            international.CalculatePrice(basePrice);
+
+            Console.WriteLine(standard.ToString());
+            Console.WriteLine(express.ToString());
+            Console.WriteLine(international.ToString());
+
+            Console.ReadKey();
+        }
+    }
+}
