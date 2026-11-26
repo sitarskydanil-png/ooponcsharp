@@ -1,0 +1,73 @@
+using System;
+
+class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+
+    public void PrintInfo()
+    {
+        Console.WriteLine($"Name: {Name}, Age: {Age}");
+    }
+}
+
+class Program
+{
+    // 1. Метод без ref: получает только копию ссылки
+    static void ResetPersonWithoutRef(Person p)
+    {
+        p = null;
+        Console.WriteLine("Внутри ResetPersonWithoutRef: параметр установлен в null");
+    }
+
+    // 2. Метод с ref: получает саму ссылку и может обнулить исходную переменную
+    static void ResetPersonWithRef(ref Person p)
+    {
+        p = null;
+        Console.WriteLine("Внутри ResetPersonWithRef: параметр установлен в null");
+    }
+
+    // Дополнительный метод для демонстрации изменения состояния объекта
+    static void ChangeName(Person p, string newName)
+    {
+        if (p != null)
+        {
+            p.Name = newName;
+        }
+    }
+
+    static void Main()
+    {
+        Person person1 = new Person("Алексей", 30);
+        Person person2 = new Person("Мария", 25);
+
+        Console.WriteLine("Исходные данные:");
+        person1.PrintInfo();
+        person2.PrintInfo();
+
+        Console.WriteLine("\n--- Попытка сброса БЕЗ ref ---");
+        ResetPersonWithoutRef(person1);
+        if (person1 != null)
+        {
+            Console.Write("person1 не null: ");
+            person1.PrintInfo();
+        }
+
+        Console.WriteLine("\n--- Попытка сброса С ref ---");
+        ResetPersonWithRef(ref person2);
+        if (person2 == null)
+        {
+            Console.WriteLine("person2 is null : Name: null, Age: null");
+        }
+
+        Console.WriteLine("\n--- Изменение состояния объекта ---");
+        ChangeName(person1, "Петр");
+        person1.PrintInfo();
+    }
+}
